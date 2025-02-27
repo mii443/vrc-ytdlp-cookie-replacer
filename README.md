@@ -1,4 +1,4 @@
-**注意: 本ソフトを使用すると、Googleアカウントがbanされる危険性があります。**
+**注意: 本ソフトを使用すると、GoogleやVRChatのアカウントがbanされる危険性があります。**
 
 YoutubeからのIPブロックにより、VRChat内で使用しているyt-dlpから[動画のURLを取得できない問題](https://github.com/yt-dlp/yt-dlp/issues/12475)を修正するソフトです。
 本ソフトは以下の挙動をします。
@@ -16,5 +16,5 @@ YoutubeからのIPブロックにより、VRChat内で使用しているyt-dlp�
 以上で動画プレイヤーの再生が可能になります。
 
 # 注意
-- Googleアカウントがbanされる危険性があります。 (https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies)
+- GoogleやVRChatのアカウントがbanされる危険性があります。 (https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies)
 - ワールドにjoinした際に、置き換えたyt-dlp.exeが修復されるようです。動画プレイヤーが再生できなくなった場合は、再び手順 4 の "ビルド済みの `yt-dlp-cookie.exe` をダブルクリックする" を再実行してください。
