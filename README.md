@@ -20,7 +20,7 @@ YoutubeからのIPブロックにより、VRChat内で使用しているyt-dlp�
 以上で動画プレイヤーの再生が可能になります。
 
 # ダウンロード
-[こちら](https://github.com/mii443/vrc-ytdlp-cookie-replacer/releases/download/v0.1.0/yt-dlp-cookie.exe) からダウンロードできます。
+各自ビルドしてください。
 
 # 注意
 - **GoogleやVRChatのアカウントがbanされる危険性があります。** (https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies)
