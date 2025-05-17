@@ -11,7 +11,7 @@ YoutubeからのIPブロックにより、VRChat内で使用しているyt-dlp�
 これによって、正しく認証されたGoogleアカウントで動画URLを取得するため、IPブロックを回避できるようになります。
 
 # 使用方法
-1. FirefoxでGoogleアカウントへログインする
+1. Firefoxで**banされてもいい**Googleアカウントへログインする
 2. Youtubeを開く
 3. 本ソフトを `cargo build --release` でビルドする
 4. ビルド済みの `yt-dlp-cookie.exe` をダブルクリックする
