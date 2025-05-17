@@ -61,6 +61,17 @@ fn get_localappdata_low() -> Option<PathBuf> {
     None
 }
 
+fn get_documents_dir() -> Option<PathBuf> {
+    if let Ok(user_profile) = env::var("USERPROFILE") {
+        let documents_dir = Path::new(&user_profile).join("Documents");
+        if documents_dir.exists() {
+            return Some(documents_dir);
+        }
+    }
+
+    None
+}
+
 fn get_current_exe() -> Result<PathBuf> {
     const MAX_RETRIES: usize = 3;
     let mut last_error = None;
@@ -207,6 +218,7 @@ fn replace(yt_dlp_original_path: &Path, yt_dlp_path: &Path, bypass_exists: bool)
 
     copy_self_to_vrchat_tools_dir(yt_dlp_path)?;
     set_integrity_level(yt_dlp_original_path)?;
+    set_integrity_level(yt_dlp_path)?;
 
     Ok(())
 }
@@ -314,6 +326,19 @@ fn main() -> ExitCode {
         return ExitCode::from(1);
     }
 
+    let documents_path = get_documents_dir();
+    if documents_path.is_none() {
+        eprintln!("Documents ディレクトリが見つかりませんでした");
+        return ExitCode::from(1);
+    }
+    let documents_path = documents_path.unwrap().join("ytdlp-replacer");
+    if !documents_path.exists() {
+        if let Err(e) = fs::create_dir_all(&documents_path) {
+            eprintln!("Documents ディレクトリの作成に失敗: {}", e);
+            return ExitCode::from(1);
+        }
+    }
+
     let local_appdata_low = local_appdata_low.unwrap();
 
     let yt_dlp_original_path = local_appdata_low
@@ -326,16 +351,16 @@ fn main() -> ExitCode {
         .join("VRChat")
         .join("Tools")
         .join("yt-dlp.exe");
-    let cookie_file = local_appdata_low
-        .join("VRChat")
-        .join("VRChat")
-        .join("Tools")
-        .join("cookies.txt");
-    let latest_args = local_appdata_low
-        .join("VRChat")
-        .join("VRChat")
-        .join("Tools")
-        .join("latest_args.txt");
+    let cookie_file = documents_path.join("cookies.txt");
+    let latest_args = documents_path.join("latest_args.txt");
+    let tmp_path = documents_path.join("tmp");
+
+    if !tmp_path.exists() {
+        if let Err(e) = fs::create_dir_all(&tmp_path) {
+            eprintln!("tmp ディレクトリの作成に失敗: {}", e);
+            return ExitCode::from(1);
+        }
+    }
 
     let tools_dir = yt_dlp_path.parent().unwrap_or(Path::new(""));
     if !tools_dir.exists() {
@@ -382,6 +407,8 @@ fn main() -> ExitCode {
         "firefox".to_string(),
         "--cookies".to_string(),
         cookie_file.to_str().unwrap_or_default().to_string(),
+        "-P".to_string(),
+        format!("\"temp:{}\"", tmp_path.to_string_lossy()),
     ];
 
     let status = match Command::new(&yt_dlp_original_path)
